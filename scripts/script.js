@@ -33,7 +33,7 @@ const updateDom = function(provideData = data) {
     provideData.forEach(item => {
         const element = document.createElement('div');
         element.classList.add('users');
-        element.innerHTML = `<strong>${item.name}</strong>${item.balance}`;
+        element.innerHTML = `<strong>${item.name}</strong>Rs ${formatToCurrency(item.balance)}`;
         main.appendChild(element);
     })
 }
@@ -45,11 +45,26 @@ const balancedouble = function(){
     updateDom();
 };
 
+const filterrich = function(){
+    data = data.filter((user)=>user.balance > 50000);
+    updateDom();
+};
 
+const totalbalance = function(){
+    const wealth = data.reduce((acc,user)=>(acc = acc + user.balance),0);
+    const wealthFinal = document.createElement('div');
+    wealthFinal.innerHTML = `<h3>Total balance:<strong>${formatToCurrency(wealth)}</strong></h3>`
+    main.appendChild(wealthFinal);
+};
+
+function formatToCurrency(amount) {
+    return amount.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+}
 
 
 
 btnAddUser.addEventListener('click',getRandomUser);
 btnDouble.addEventListener('click',balancedouble);
 btnFilterRich.addEventListener('click',filterrich);
+btnTotal.addEventListener('click',totalbalance);
 //update dom with random user
